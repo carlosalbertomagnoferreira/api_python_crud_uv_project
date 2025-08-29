@@ -29,8 +29,8 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U user -d meubanco"]
       interval: 5s
-      retries: 10
-      timeout: 5s
+      retries: 5
+      timeout: 3s
 
 volumes:
   postgres_data:

@@ -1,23 +1,20 @@
 # Imagem base do Python
 FROM python:3.11-slim
 
-# Instala o uv (gestor de dependências)
+# Instala uv (gestor de dependências)
 RUN pip install uv
 
-# Define o diretório de trabalho
+# Define diretório de trabalho
 WORKDIR /app
 
-# Copia os arquivos de configuração do projeto
-COPY pyproject.toml uv.lock ./
-
-# Instala as dependências no ambiente do container
-RUN uv sync --frozen
-
-# Copia o restante do código
+# Copia arquivos do projeto
 COPY . .
 
-# Expõe a porta da aplicação
+# Instala dependências do pyproject.toml
+RUN uv sync --frozen
+
+# Expõe porta da API
 EXPOSE 8000
 
-# Comando de inicialização
+# Comando padrão: entrypoint
 CMD ["./entrypoint.sh"]
