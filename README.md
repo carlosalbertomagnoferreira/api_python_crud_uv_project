@@ -1,5 +1,10 @@
 # API Assíncrona com FastAPI, PostgreSQL e Alembic
 
+[![Python](https://img.shields.io/badge/python-3.11-blue)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100.0-lightblue)](https://fastapi.tiangolo.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/Docker-Container-blue)](https://www.docker.com/)
+
 Este projeto é uma API REST assíncrona construída com **FastAPI**, usando **SQLAlchemy Async** para interação com **PostgreSQL**. Possui **CRUD completo** para usuários, **migrations automatizadas** com Alembic e testes de integração rodando automaticamente em Docker.
 
 ---
