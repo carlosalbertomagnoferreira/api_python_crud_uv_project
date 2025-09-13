@@ -1,5 +1,6 @@
 import asyncio
 import httpx
+from http import HTTPStatus
 
 BASE_URL = "http://localhost:8000"
 
@@ -10,7 +11,7 @@ async def main():
             f"{BASE_URL}/users",
             params={"name": "Carlos", "email": "carlos@example.com"}
         )
-        assert response.status_code == 200, response.text
+        assert response.status_code == HTTPStatus.OK, response.text
         user = response.json()
         print("Usuário criado:", user)
         user_id = user["id"]
@@ -20,7 +21,7 @@ async def main():
             f"{BASE_URL}/users",
             params={"name": "Outro Carlos", "email": "carlos@example.com"}
         )
-        assert response.status_code == 400, "Email duplicado não retornou erro"
+        assert response.status_code == HTTPStatus.BAD_REQUEST, "Email duplicado não retornou erro"
         print("Erro corretamente detectado:", response.json())
 
         print("\n3️⃣ Teste: Listar usuários")
@@ -50,17 +51,23 @@ async def main():
             f"{BASE_URL}/users/{maria_id}",
             params={"email": "carlos.alberto@example.com"}
         )
-        assert response.status_code == 400
+        assert response.status_code == HTTPStatus.BAD_REQUEST
         print("Erro corretamente detectado ao tentar atualizar para email duplicado:", response.json())
 
         print("\n6️⃣ Teste: Deletar usuário")
+        print("\n Deletando usuário: Carlos Alberto")
         response = await client.delete(f"{BASE_URL}/users/{user_id}")
-        assert response.status_code == 200
+        assert response.status_code == HTTPStatus.OK
+        print("Usuário deletado:", response.json())
+
+        response = await client.delete(f"{BASE_URL}/users/{maria_id}")
+        print(f"\n Deletando usuário: Maria")
+        assert response.status_code == HTTPStatus.OK
         print("Usuário deletado:", response.json())
 
         print("\n7️⃣ Teste: Deletar usuário inexistente (deve falhar)")
         response = await client.delete(f"{BASE_URL}/users/999999")
-        assert response.status_code == 404
+        assert response.status_code == HTTPStatus.NOT_FOUND
         print("Erro corretamente detectado:", response.json())
 
         print("\n✅ Todos os testes passaram com sucesso!")
