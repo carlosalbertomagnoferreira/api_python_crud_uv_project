@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postgres
+  name: postgres-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - image: postgres
+        name: postgres
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: meubanco
+        - name: POSTGRES_USER
+          value: user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: postgres
+  name: postgres-svc
+spec:
+  ports:
+  - name: postgres
+    port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: postgres
+  type: ClusterIP
+
+---
+apiVersion: v1
+data:
+  DATABASE_URL: cG9zdGdyZXNxbCthc3luY3BnOi8vdXNlcjpwYXNzd29yZEBwb3N0Z3Jlcy1zdmM6NTQzMi9tZXViYW5jbw==
+kind: Secret
+metadata:
+  name: database-secret
+
+---
+apiVersion: v1
+data:
+  POSTGRES_PASSWORD: cGFzc3dvcmQ=
+kind: Secret
+metadata:
+  name: postgres-secret

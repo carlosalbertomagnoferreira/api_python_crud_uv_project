@@ -4,8 +4,9 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100.0-lightblue)](https://fastapi.tiangolo.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-Container-blue)](https://www.docker.com/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-Production%20Ready-blue?logo=kubernetes)](https://kubernetes.io/)
 
-Este projeto é uma API REST assíncrona construída com **FastAPI**, usando **SQLAlchemy Async** para interação com **PostgreSQL**. Possui **CRUD completo** para usuários, **migrations automatizadas** com Alembic e testes de integração rodando automaticamente em Docker.
+Este projeto é uma API REST assíncrona construída com **FastAPI**, usando **SQLAlchemy Async** para interação com **PostgreSQL**. Possui **CRUD completo** para usuários, **migrations automatizadas** com Alembic e testes de integração rodando automaticamente em Docker e Kubernetes.
 
 ---
 
@@ -17,9 +18,9 @@ Este projeto é uma API REST assíncrona construída com **FastAPI**, usando **S
 - **PostgreSQL**
 - **Alembic** (migrations)
 - **uv** (gerenciador de dependências)
-- **Docker & Docker Compose**
 - **httpx** (teste automatizado do CRUD)
 - **Swagger UI** (documentação automática)
+- **Docker & Docker Compose & Kubernetes**
 
 ---
 
@@ -28,19 +29,21 @@ Este projeto é uma API REST assíncrona construída com **FastAPI**, usando **S
 ```
 
 api_python_crud_uv_project/
-│── alembic/              # Diretório das migrations
-│   └── versions/         # Arquivos de migrations
-│── alembic.ini           # Configuração Alembic
-│── main.py               # API FastAPI
-│── models.py             # Models SQLAlchemy
-│── entrypoint.sh         # Script de inicialização do container
-│── test\_api.py           # Testes de integração do CRUD
-│── Dockerfile
-│── docker-compose.yml
-│── pyproject.toml
-│── uv.lock
+│── alembic/                          # Diretório das migrations
+│   └── versions/                     # Arquivos de migrations
+│── alembic.ini                       # Configuração Alembic
+│── main.py                           # API FastAPI
+│── models.py                         # Models SQLAlchemy
+│── entrypoint.sh                     # Script de inicialização do container
+│── test\_api.py                      # Testes de integração do CRUD
+│── Dockerfile                        # Construção da imagem docker
+│── docker-compose.yml                # Orquestração local (app + db)
+│── docker-compose-from-dockerhub.yml # Compose usando imagens do Docker Hub
+│── pyproject.toml                    # Gerenciamento de dependências (uv)
+│── uv.lock                           # Lockfile das dependências
+│── k8s/                              # Manifestos Kubernetes (deploy app e banco)
 
-````
+```
 
 ---
 
@@ -76,7 +79,12 @@ api_python_crud_uv_project/
 
 ```bash
 docker-compose up --build
-````
+```
+
+Baixando a imagem direto do Docker Hub
+```bash
+docker compose -f docker-compose-from-dockerhub.yml up
+```
 
 Fluxo automático:
 
@@ -122,6 +130,21 @@ uv run uvicorn main:app --reload
 ```bash
 uv run python test_api.py
 ```
+
+## ☸️ Deploy no Kubernetes
+
+Para rodar a aplicação em um cluster Kubernetes, utilize os manifestos disponíveis no diretório `k8s/`.
+
+Exemplo de aplicação dos manifestos:
+
+```bash
+kubectl apply -f k8s/database.yaml
+kubectl apply -f k8s/app_deploy.yaml
+```
+
+Isso irá provisionar o banco de dados PostgreSQL e a aplicação FastAPI no cluster. Certifique-se de ter um cluster Kubernetes configurado e o `kubectl` apontando para o contexto correto.
+
+Você pode customizar os arquivos conforme sua necessidade (por exemplo, variáveis de ambiente, storage, etc).
 
 ---
 
