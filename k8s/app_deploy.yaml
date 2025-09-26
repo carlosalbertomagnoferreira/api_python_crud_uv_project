@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: api-python-deploy
-        image: magnocarlos1988/api-python-uv-project:v3
+        image: magnocarlos1988/api-python-uv-project:latest
         ports:
         - containerPort: 8000
         env:
