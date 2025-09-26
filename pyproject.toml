@@ -13,3 +13,25 @@ dependencies = [
     "sqlalchemy[asyncio]>=2.0.43",
     "uvicorn>=0.35.0",
 ]
+[tool.ruff]
+extend-exclude = [
+    ".venv",
+    "__pycache_",
+    ".githutb",
+    ".idea",
+    ".ruff_cache",
+]
+[tool.ruff.format]
+preview = true
+quote-style = "single"
+[tool.ruff.lint]
+preview = true
+ignore = ["E501"]
+select = [
+    "I",
+    "F",
+    "E",
+    "W",
+    "PL",
+    "PT",
+]

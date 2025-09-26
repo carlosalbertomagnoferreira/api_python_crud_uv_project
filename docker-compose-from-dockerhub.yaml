@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   api:
-    image: magnocarlos1988/api-python-uv-project:v3
+    image: magnocarlos1988/api-python-uv-project:latest
     container_name: minha_api
     ports:
       - "8000:8000"
