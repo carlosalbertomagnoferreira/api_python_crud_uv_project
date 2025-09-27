@@ -38,7 +38,6 @@ api_python_crud_uv_project/
 │── test\_api.py                      # Testes de integração do CRUD
 │── Dockerfile                        # Construção da imagem docker
 │── docker-compose.yml                # Orquestração local (app + db)
-│── docker-compose-from-dockerhub.yml # Compose usando imagens do Docker Hub
 │── pyproject.toml                    # Gerenciamento de dependências (uv)
 │── uv.lock                           # Lockfile das dependências
 │── k8s/                              # Manifestos Kubernetes (deploy app e banco)
