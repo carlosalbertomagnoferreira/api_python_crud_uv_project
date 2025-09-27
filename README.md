@@ -75,15 +75,10 @@ api_python_crud_uv_project/
 
 ---
 
-### 2. Subindo com Docker
+### 2. Subindo com Docker Compose
 
 ```bash
 docker-compose up --build
-```
-
-Baixando a imagem direto do Docker Hub
-```bash
-docker compose -f docker-compose-from-dockerhub.yml up
 ```
 
 Fluxo automático:

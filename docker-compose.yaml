@@ -2,10 +2,15 @@ version: "3.9"
 
 services:
   api:
-    build: .
+    image: magnocarlos1988/api-python-uv-project:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: minha_api
     ports:
       - "8000:8000"
+    networks:
+      - project_api_python
     depends_on:
       db:
         condition: service_healthy
@@ -13,7 +18,7 @@ services:
       DATABASE_URL: postgresql+asyncpg://user:password@db:5432/meubanco
 
   db:
-    image: postgres
+    image: postgres:18.0-alpine3.22
     container_name: postgres_db
     restart: always
     environment:
@@ -22,6 +27,8 @@ services:
       POSTGRES_DB: meubanco
     ports:
       - "5432:5432"
+    networks:
+      - project_api_python
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -32,3 +39,7 @@ services:
 
 volumes:
   postgres_data:
+    name: postgres_data_api_python
+
+networks:
+  project_api_python:
